@@ -4,9 +4,9 @@
 baseurl:
 url: https://ktecv2000.github.io
 date_format: "ordinal"
-title: TITLE
-subtitle: "sub title"
-description: "my blog"
+title: ktecv2000's blog
+subtitle: "Infosec & CTF <3"
+description: ""
 keywords: k1, k2, k3
 timezone: Asia/Taipei
 encoding: "utf-8"
@@ -15,12 +15,12 @@ side_bar_repo_limit: 5
 # ---------------- #
 #      Author      #
 # ---------------- #
-author: author
-organization: organization
-organization_url: organization_url
-github_username: github_username
-location: location
-email: email
+author: ktecv2000
+#organization: organization
+#organization_url: organization_url
+github_username: ktecv2000
+location: Taiwan
+email: ktecv2000@gmail.com
 
 # ---------------- #
 #    Navigation    #
@@ -87,12 +87,12 @@ repository: ktecv2000/ktecv2000.github.io
 #      Comments    #
 # ---------------- #
 # support provider: disqus, gitment, gitalk
-comments_provider: gitalk
+comments_provider: disqus
 # !!!重要!!! 请修改下面这些信息为你自己申请的
 # !!!Important!!! Please modify infos below to yours
 # https://disqus.com
-#disqus:
-#    username: 
+disqus:
+    username: ktecv2000
 # https://imsun.net/posts/gitment-introduction/
 #gitment:
 #    owner: mzlogin
