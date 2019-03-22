@@ -1,5 +1,5 @@
 ---
-layout: draft
+layout: post
 title: CONFidence CTF 2019 writeups - My admin panel, Elementary, Web 50
 categories: CTF
 description: CTF writeup
