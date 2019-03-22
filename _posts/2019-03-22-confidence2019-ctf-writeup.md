@@ -72,7 +72,10 @@ wfuzz -b otadmin="{\"hash\": FUZZ}" --hh=78 -c -z range,0-999 https://gameserver
 
 flag - `p4{wtf_php_comparisons_how_do_they_work}`
 
+---
+
 ## Web 50 - [web 154p]
+
 網站有`profile`和`report`兩個page，其中`/report`可以傳一個URL給他，不過只能是同個domain底下的，page也講得很明白了：
 > admin will take a look, blah blah, you know what it means
 
@@ -196,6 +199,8 @@ flag : `p4{15_1t_1m4g3_or_n0t?}`
 * [use Burp Collaborator](https://github.com/HalfFlag/ctf-writeups/tree/master/web/teaser-confidence-2019_web-50)
 * [cache poison](https://ctftime.org/writeup/13925)
 
+---
+
 ## Elementary - [reversing 57p]
 相對Web來說Reversing還是比較擅長的，原來想利用這題來練習Ghidra，沒想到Ghidra decompile出來的東西超醜...(一堆nested if)，相比IDA全都是one layer if statement，於是索性寫個IDApy來解了。
 
@@ -228,7 +233,8 @@ print('flag => ' + ''.join(list(map(chr, flag))))
 
 flag : `p4{I_really_hope_you_automated_this_somehow_otherwise_it_might_be_a_bit_frustrating_to_do_this_manually}`
 
+---
+
 ## Ref.
 * [How to expose a local development server to the Internet](https://medium.com/botfuel/how-to-expose-a-local-development-server-to-the-internet-c31532d741cc)
 * [測試 webhook 不再煩惱：ngrok](https://blog.techbridge.cc/2018/05/24/ngrok/)
-* 

