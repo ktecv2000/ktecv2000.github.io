@@ -62,6 +62,7 @@ if ($session_data['hash'] != strtoupper(MD5($cfg_pass)))
 另外如果false時會噴hint
 > I CAN EVEN GIVE YOU A HINT XD
 > 0006464640640064000646464640006400640640646400
+  
 回去看一下code，會發現這個output來自於`secret[i] & 0xc0`，加上這個secret是某個MD5 hash，所以只能是英文和數字，output是**0**的是`0-9`，而output是**64**的是`a-zA-Z`，所以能得出一個結論－**secret的前三byte是數字**。
 
 再結合`==`的特性，只要**brute-force三位數數字**就能解了。
