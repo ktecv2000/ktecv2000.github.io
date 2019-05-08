@@ -1,6 +1,6 @@
 ---
 layout: post
-title: [Hackerone] Chaining CVEs - from 404 to RCE
+title: 【Hackerone】 Chaining CVEs - from 404 to RCE
 categories: bugbounty
 description: 
 keywords: bugbounty
