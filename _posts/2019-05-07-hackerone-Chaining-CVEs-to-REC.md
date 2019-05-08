@@ -1,6 +1,6 @@
 ---
 layout: post
-title: \[Hackerone\] Chaining CVEs - from 404 to RCE
+title: [Hackerone] Chaining CVEs - from 404 to RCE
 categories: bugbounty
 description: 
 keywords: bugbounty
@@ -44,6 +44,15 @@ keywords: bugbounty
 也就等於是`/forbiden/`，這下成功繞過ACL了。
 
 # The Second CVE
-利用`target/josso/%5C../`繞過ACL後，頁面被redirect到Jboss web console，此時又關聯了一個CVE
+利用`target/josso/%5C../`繞過ACL後，頁面被redirect到`/josso/%5C../web-console`，這是JBoss的web console！此時又關聯了一個CVE
+
+> In addition, I found CVE-2007-1036, a High vulnerability that said that the Jboss web console needed to be protected to prevent unauthenticated server admin requests
 
 ![](/images/2019-05-07-hackerone-Chaining-CVEs-to-REC/CVE-2007-1036.PNG)
+
+意思就是JBoss可以讓我們send server admin requests，至於前提**be protected**已經被第一個CVE給繞過了，那代表接下來離RCE也不遠了。
+
+作者利用[jex boss](https://github.com/joaomatosf/jexboss)打Java Deserialization，好像有點小題大作，畢竟一個admin web console都開出來了，不過最後都是RCE也沒差。
+
+# The End
+> I took away a few things from this: sometimes, a 404 or redirect isn’t the end of the road. See if the server still has some pages left lying around that you can exploit. Furthermore, think about how you can chain vulnerabilities to hit the RCE holy grail. Next, back up your RCE by looking for sensitive information or horizontal escalation opportunities on the server. Are there other hosts on the network? Clues in /etc/passwd? The opportunities are endless.
